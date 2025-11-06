@@ -37,17 +37,17 @@ export default function HeroShop() {
         {/* Image Grid */}
         <div className="md:w-1/2 grid grid-cols-2 gap-4">
           <img
-            src="/images/dragon1.png"
+            src="/product1..jpeg"
             alt="carving1"
             className="rounded-xl object-cover h-[300px] w-full"
           />
           <img
-            src="/images/dragon2.png"
+            src="/product2..jpeg"
             alt="carving2"
             className="rounded-xl object-cover h-[300px] w-full"
           />
           <img
-            src="/images/dragon3.png"
+            src="/product2..jpeg"
             alt="carving3"
             className="rounded-xl object-cover h-[300px] w-full col-span-2"
           />

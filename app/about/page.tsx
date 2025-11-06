@@ -75,7 +75,7 @@ export default function About() {
       <div className="bg-gray-50 py-20">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <img
-            src="/carving-process.jpg"
+            src="/product2..jpeg"
             alt="Carving process"
             className="rounded-xl shadow-lg object-cover"
           />
@@ -99,16 +99,21 @@ export default function About() {
       {/* Gallery */}
       <div className="py-20">
         <div className="grid grid-cols-2 md:grid-cols-6 gap-2">
-          {["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg"].map(
-            (img, i) => (
-              <img
-                key={i}
-                src={`/${img}`}
-                alt={`Gallery ${i + 1}`}
-                className="w-full h-64 object-cover"
-              />
-            )
-          )}
+          {[
+            "product1..jpeg",
+            "product2..jpeg",
+            "product3..jpeg",
+            "product4..jpeg",
+            "product5..jpeg",
+            "product6..jpeg",
+          ].map((img, i) => (
+            <img
+              key={i}
+              src={`/${img}`}
+              alt={`Gallery ${i + 1}`}
+              className="w-full h-64 object-cover"
+            />
+          ))}
         </div>
 
         <div className="bg-black text-white py-12">

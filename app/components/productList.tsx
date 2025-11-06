@@ -10,35 +10,35 @@ const allProducts = [
     name: "Balinese Gate Wood Carving",
     category: "Balinese Statue",
     price: "Rp1.600.000",
-    image: "/images/product1.jpg",
+    image: "/product5..jpeg",
   },
   {
     id: 2,
     name: "Abstract Mask Face Wood Carving",
     category: "Abstract",
     price: "Rp660.000",
-    image: "/images/product2.jpg",
+    image: "/product2..jpeg",
   },
   {
     id: 3,
     name: "Baby Buddha Wood Statue",
     category: "Buddha",
     price: "Rp450.000",
-    image: "/images/product3.jpg",
+    image: "/product6..jpeg",
   },
   {
     id: 4,
-    name: "Dragon Wall Art",
-    category: "Dragon",
+    name: "Frog Wall Art",
+    category: "Animal",
     price: "Rp2.000.000",
-    image: "/images/product4.jpg",
+    image: "/product3..jpeg",
   },
   {
     id: 5,
     name: "Hindu God Sculpture",
     category: "Hindu God",
     price: "Rp1.200.000",
-    image: "/images/product5.jpg",
+    image: "/product6..jpeg",
   },
 ];
 
@@ -59,27 +59,29 @@ export default function ProductList() {
       : allProducts;
 
   return (
-    <section className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 px-6 lg:px-10 py-10 text-white">
+    <section className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 px-6 lg:px-10 py-10 bg-white  text-black">
       {/* Sidebar */}
-      <FilterSidebar
-        selectedCategories={selectedCategories}
-        onCategoryChange={handleCategoryChange}
-      />
+      <div className="md:w-[280px] w-full">
+        <FilterSidebar
+          selectedCategories={selectedCategories}
+          onCategoryChange={handleCategoryChange}
+        />
+      </div>
 
       {/* Product Grid */}
       <div className="flex-1">
         <div className="flex justify-between items-center mb-6">
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-600 text-sm">
             Showing {filteredProducts.length} of {allProducts.length} results
           </p>
-          <select className="bg-gray-800 border border-gray-700 text-sm text-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-amber-500">
+          <select className="bg-gray-900 border border-gray-700 text-sm text-white rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-amber-500">
             <option>Default sorting</option>
             <option>Price: low to high</option>
             <option>Price: high to low</option>
           </select>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProducts.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}

@@ -6,10 +6,12 @@ import ProductList from "../components/productList";
 export default function ProductsPage() {
   return (
     <>
-      <Navbar />
-      <HeroShop />
-      <ProductList />
-      <Footer />
+      <div className="bg-white min-h-screen">
+        <Navbar />
+        <HeroShop />
+        <ProductList />
+        <Footer />
+      </div>
     </>
   );
 }

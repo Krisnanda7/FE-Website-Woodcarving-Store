@@ -20,7 +20,22 @@
 }
 
 body {
-  background-color: #000;
-  color: white;
+  /* background-color: #fffdfd; */
+  /* color: white; */
   font-family: "Inter", sans-serif;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.3s ease forwards;
 }
