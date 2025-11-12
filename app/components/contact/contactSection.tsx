@@ -32,16 +32,31 @@ export default function ContactSection() {
           transition={{ duration: 0.8 }}
           className="flex-1 space-y-5"
         >
-          <p className="text-sm text-orange-400 tracking-widest">
+          <motion.p
+            className="text-sm text-orange-400 tracking-widest"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
             HOME &gt; CONTACT US
-          </p>
-          <h1 className="text-white text-4xl md:text-5xl font-extrabold leading-tight mt-4">
+          </motion.p>
+          <motion.h1
+            className="text-white text-4xl md:text-5xl font-extrabold leading-tight mt-4"
+            initial={{ opacity: 0, y: 70 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
             CONTACT <span className="text-amber-500">US</span>
-          </h1>
-          <p className="text-gray-300 mt-6 ">
+          </motion.h1>
+          <motion.p
+            className="text-gray-300 mt-6 "
+            initial={{ opacity: 0, y: 80 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+          >
             Have a question, custom request, or want to order our handcrafted
             products ? Contact us directly via WhatsApp.
-          </p>
+          </motion.p>
 
           <button
             onClick={handleWhatsApp}

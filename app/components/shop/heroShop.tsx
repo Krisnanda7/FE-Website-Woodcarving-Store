@@ -1,30 +1,56 @@
+"use client";
+import { motion } from "framer-motion";
+
 export default function HeroShop() {
   return (
     <section
-      className="relative text-white py-20 px-6 lg:px-20 bg-cover bg-center bg-no-repeat"
+      className="relative text-white py-20 px-6 lg:px-20 bg-cover bg-center bg-no-repeat overflow-hidden"
       style={{ backgroundImage: "url('/product2..jpeg')" }}
     >
-      {/*  overlay gelap agar text tetap terbaca */}
-      <div className="absolute inset-0 bg-black/80 "></div>
+      {/* Overlay gelap */}
+      <div className="absolute inset-0 bg-black/80"></div>
 
       <div className="py-20 max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 relative z-10">
-        {/* Text */}
-        <div className="md:w-1/2">
+        {/* ======= Text Section ======= */}
+        <motion.div
+          className="md:w-1/2"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
           <p className="text-sm text-orange-400 tracking-widest">
             HOME &gt; SHOP
           </p>
-          <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mt-4">
+
+          <motion.h1
+            className="text-4xl md:text-5xl font-extrabold leading-tight mt-4"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
             EXPLORE OUR HANDMADE WOODEN FURNITURE AND BALINESE{" "}
             <span className="text-amber-500">CARVINGS COLLECTION</span>
-          </h1>
-          <p className="text-gray-300 mt-6">
+          </motion.h1>
+
+          <motion.p
+            className="text-gray-300 mt-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+          >
             Discover our exclusive collection of handcrafted wooden furniture
             and décor. Each piece is meticulously crafted by skilled Balinese
             artisans, combining timeless designs, sustainable materials, and
             unmatched quality.
-          </p>
+          </motion.p>
 
-          <div className="flex gap-10 mt-10 border-t border-gray-600 pt-6">
+          {/* Feature Section */}
+          <motion.div
+            className="flex gap-10 mt-10 border-t border-gray-600 pt-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 1 }}
+          >
             <div>
               <h3 className="font-semibold text-white">High Quality</h3>
               <p className="text-gray-400 text-sm mt-2">
@@ -37,27 +63,35 @@ export default function HeroShop() {
                 Quick and reliable shipping from Bali to your home.
               </p>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        {/* Image Grid */}
-        <div className="md:w-1/2 grid grid-cols-2 gap-4">
-          <img
+        {/* ======= Image Grid ======= */}
+        <motion.div
+          className="md:w-1/2 grid grid-cols-2 gap-4"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+        >
+          <motion.img
             src="/product1..jpeg"
             alt="carving1"
-            className="rounded-xl object-cover h-[300px] w-full"
+            className="rounded-xl object-cover h-[300px] w-full shadow-lg hover:scale-105 transition-transform"
+            whileHover={{ scale: 1.05 }}
           />
-          <img
+          <motion.img
             src="/product2..jpeg"
             alt="carving2"
-            className="rounded-xl object-cover h-[300px] w-full"
+            className="rounded-xl object-cover h-[300px] w-full shadow-lg hover:scale-105 transition-transform"
+            whileHover={{ scale: 1.05 }}
           />
-          <img
+          <motion.img
             src="/product2..jpeg"
             alt="carving3"
-            className="rounded-xl object-cover h-[300px] w-full col-span-2"
+            className="rounded-xl object-cover h-[300px] w-full col-span-2 shadow-lg hover:scale-105 transition-transform"
+            whileHover={{ scale: 1.05 }}
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

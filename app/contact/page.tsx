@@ -1,6 +1,7 @@
 import ContactSection from "../components/contact/contactSection";
 import Footer from "../components/layout/footer";
 import Navbar from "../components/layout/navbar";
+import { motiion } from "framer-motion";
 
 export default function ContactPage() {
   return (
@@ -8,8 +9,8 @@ export default function ContactPage() {
       <Navbar />
       <ContactSection />
 
-      <div className="py-20 px-5">
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+      <div className="py-20 px-20 ">
+        <div className="grid grid-cols-1 lg:grid-cols-6 md:grid-cols-3 gap-7 ">
           {[
             "product1..jpeg",
             "product2..jpeg",

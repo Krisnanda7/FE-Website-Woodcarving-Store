@@ -9,7 +9,7 @@ const allProducts = [
   {
     id: 1,
     name: "Balinese Gate Wood Carving",
-    category: "Balinese Statue",
+    category: "Patung Style Balinese",
     price: 1600000,
     image: "/product5..jpeg",
   },

@@ -1,3 +1,6 @@
+"use client";
+import { motion } from "framer-motion";
+
 export default function About() {
   return (
     <section className="py-20 px-10 md:py-20 md:px-20 lg:py-20 lg:px-50 bg-white text-black">

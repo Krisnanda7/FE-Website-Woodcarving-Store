@@ -25,14 +25,14 @@ const products: Product[] = [
     name: "Abstract Mask Face Wood Carving – Tribal Wall Art Decor",
     category: "ABSTRACT, MASK",
     price: "Rp660.000",
-    image: "/product5..jpeg",
+    image: "/product1..jpeg",
   },
   {
     id: 3,
     name: "Abstract Mask Wall Art – Hand-Carved Hibiscus Wood Tribal Decor",
     category: "MASK",
     price: "Rp330.000",
-    image: "/product5..jpeg",
+    image: "/product2..jpeg",
   },
 ];
 
@@ -40,21 +40,21 @@ export default function HeroMade() {
   return (
     <section className="max-w-7xl mx-auto py-20 px-4">
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-10">
+      <div className="p-5 lg:p-10 flex flex-col md:flex-row md:items-end md:justify-between mb-10 text-center">
         <h2 className="text-4xl font-bold tracking-tight uppercase">
           Made with Care
         </h2>
-        <p className="text-gray-500 mt-3 md:mt-0 text-sm md:text-base">
-          Masters of Handcrafted <br /> Wooden Art in Bali
+        <p className="text-amber-700 mt-3 md:mt-0 text-sm md:text-base">
+          MASTERS OF HANDCRAFTED <br /> WOODEN ART
         </p>
       </div>
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {products.map((product) => (
-          <div key={product.id} className="group">
+          <div key={product.id} className="group text-center">
             {/* Gambar */}
-            <div className="relative overflow-hidden rounded-xl">
+            <div className="relative overflow-hidden rounded-xl ">
               <Image
                 src={product.image}
                 alt={product.name}
@@ -98,6 +98,16 @@ export default function HeroMade() {
           </button>
         </a>
       </div>
+
+      {/* Header Section 2 */}
+      {/* <div className="py-40 px-10 lg:py-50 lg:px-20 flex flex-col md:flex-row md:items-end md:justify-between mb-10 text-center">
+        <h2 className="text-4xl font-bold tracking-tight uppercase">
+          What`s new
+        </h2>
+        <p className="text-amber-700 mt-3 md:mt-0 text-sm md:text-base ">
+          NEW COLLECTION FROM <br /> MUTRA WOOD CARVING
+        </p>
+      </div> */}
     </section>
   );
 }

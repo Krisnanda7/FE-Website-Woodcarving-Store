@@ -12,16 +12,14 @@ export default function FilterSidebar({
   const [isOpen, setIsOpen] = useState(false);
 
   const categories = [
-    "Abstract",
-    "Animal",
-    "Balinese Statue",
-    "Buddha",
-    "Hand",
-    "Hindu God",
     "Akar Ranting",
     "Pepohonan",
     "Dedaunan",
-    "Patung Dewa",
+    "Patung Dewa Bali",
+    "Abstract",
+    "Binatang",
+    "Buddha",
+    "Patung Style Balinese",
   ];
 
   const formatRupiah = (value: number) =>

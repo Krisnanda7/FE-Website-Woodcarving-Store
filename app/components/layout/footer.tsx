@@ -3,7 +3,7 @@ import { Facebook, Instagram, Mail } from "lucide-react";
 export default function Footer() {
   return (
     <footer className="bg-black text-white py-16 px-6 md:px-16 lg:px-20 border-t border-gray-800">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 ">
+      <div className="max-w-4xl  mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-12 ">
         {/* Shop Section */}
         <div>
           <h3 className="text-xl font-bold mb-6">Menu</h3>
