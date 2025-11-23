@@ -1,12 +1,7 @@
 "use client";
 
-<<<<<<< HEAD
 import { useCartSidebarStore } from "@/store/useCartSidebarStore";
 import { useCartStore } from "@/store/useCartStore";
-=======
-import { useCartStore } from "@/store/useCartStore";
-import { useCartSidebarStore } from "@/store/userCartSidebarStore";
->>>>>>> a5601d85c46a7af38844bfef50c9cac74443b7ed
 import { X } from "lucide-react";
 
 export default function CartSidebar() {

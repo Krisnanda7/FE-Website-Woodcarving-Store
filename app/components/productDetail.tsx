@@ -3,11 +3,7 @@
 import { useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
 import { useWishlistStore } from "@/store/useWishListStore";
-<<<<<<< HEAD
 import { useCartSidebarStore } from "@/store/useCartSidebarStore";
-=======
-import { useCartSidebarStore } from "@/store/userCartSidebarStore";
->>>>>>> a5601d85c46a7af38844bfef50c9cac74443b7ed
 
 export default function ProductDetail({ product }: any) {
   const [mainImage, setMainImage] = useState(product.images[0]);
