@@ -1,9 +1,9 @@
 import About from "./components/home/aboutSection";
-import HeroSection from "./components/home/heroSection";
-import "./globals.css";
-import Navbar from "./components/layout/navbar";
-import Footer from "./components/layout/footer";
 import HeroMade from "./components/home/heroMade";
+import HeroSection from "./components/home/heroSection";
+import Footer from "./components/layout/footer";
+import Navbar from "./components/layout/navbar";
+import "./globals.css";
 
 export default function HomePage() {
   return (

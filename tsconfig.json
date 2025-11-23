@@ -29,7 +29,7 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
-    "app/cart/cartPagetsx"
+    "app/[locale]/cart/cartPagetsx"
   ],
   "exclude": ["node_modules"]
 }
