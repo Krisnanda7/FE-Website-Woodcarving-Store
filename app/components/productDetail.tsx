@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Heart } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/useCartStore";
 import { useWishlistStore } from "@/store/useWishListStore";
+import { useCartSidebarStore } from "@/store/useCartSidebarStore";
 
 export default function ProductDetail({ product }: any) {
   const [mainImage, setMainImage] = useState(product.images[0]);
@@ -16,8 +15,7 @@ export default function ProductDetail({ product }: any) {
 
   const addToCart = useCartStore((state) => state.addToCart);
   const addToWishlist = useWishlistStore((state) => state.toggleWishlist);
-
-  const router = useRouter();
+  const openCart = useCartSidebarStore((s) => s.openCart);
 
   const handleAddToCart = () => {
     addToCart({
@@ -27,7 +25,7 @@ export default function ProductDetail({ product }: any) {
       image: "/product5..jpeg",
       quantity,
     });
-    router.push("/cart"); // langsung pindah ke cart
+    openCart(); // langsung pindah ke cart
   };
 
   const handleAddToWishlist = () => {
