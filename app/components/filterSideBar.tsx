@@ -31,7 +31,7 @@ export default function FilterSidebar({
 
   // AMBIL DATA CATEGORY DARI BACKEND TANPA MENGUBAH STYLING
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/categories")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categories`)
       .then((res) => res.json())
       .then((data) => {
         // Sesuaikan structure data kamu
