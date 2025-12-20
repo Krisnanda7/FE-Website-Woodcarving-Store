@@ -8,15 +8,25 @@ import Footer from "@/app/components/layout/footer";
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const id = Number(params.id);
+  const id = params?.id ? Number(params.id) : null;
 
   const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("API Response:", data); // untuk debug
+    if (!id) return;
+
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`
+        );
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
 
         setProduct({
           id: data.id,
@@ -24,19 +34,28 @@ export default function ProductDetailPage() {
           category: data.category,
           price: Number(data.price),
           thumbnail_url: data.thumbnail_url,
-          gallery_urls: data.gallery_urls || [],
+          gallery_urls: data.gallery_urls ?? [],
           description: data.description,
           tags: ["WoodCarving", "Handmade"],
           sku: data.id,
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching product:", error);
-      });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
   }, [id]);
 
-  if (!product)
+  if (loading) {
     return <p className="text-center text-black mt-20">Loading...</p>;
+  }
+
+  if (!product) {
+    return <p className="text-center text-red-500 mt-20">Product not found</p>;
+  }
 
   return (
     <main>
