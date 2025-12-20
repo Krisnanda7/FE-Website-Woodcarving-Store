@@ -6,10 +6,10 @@ export default function HeroSection() {
     <section
       className="relative bg-cover bg-center bg-no-repeat flex flex-col lg:flex-row items-center
      justify-center gap-12 lg:gap-20 px-6 md:px-16 lg:px-20 py-16 md:py-24 bg-black text-white min-h-screen overflow-hidden"
-      style={{ backgroundImage: "url('/product5..jpeg')" }}
+      style={{ backgroundImage: "url('/herosectionhome.jpeg')" }}
     >
       {/* Overlay gelap */}
-      <div className="absolute inset-0 bg-black/80"></div>
+      <div className="absolute inset-0 bg-black/85"></div>
 
       {/* ===== TEXT CONTENT ===== */}
       <motion.div
@@ -78,25 +78,27 @@ export default function HeroSection() {
         transition={{ duration: 1, ease: "easeOut" }}
       >
         <motion.img
-          src="/product5..jpeg"
+          src="/gridhome1.jpeg"
           alt="carving1"
-          className="rounded-xl object-cover h-[400px] w-full col-span-2 row-span-2 shadow-lg"
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.3 }}
+          className="rounded-xl object-cover w-full col-span-2 row-span-2 shadow-lg
+                     h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] xl:h-[700px]"
+          style={{ objectPosition: "center 40%" }}
         />
 
         <motion.img
-          src="/product2..jpeg"
+          src="/gridhome2.jpeg"
           alt="carving2"
-          className="rounded-xl object-cover h-[190px] w-full shadow-lg"
+          className="rounded-xl object-cover w-full shadow-lg
+                     h-[140px] sm:h-[165px] md:h-[190px] lg:h-[215px] xl:h-[240px]"
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.3 }}
         />
 
         <motion.img
-          src="/product2..jpeg"
+          src="/gridhome3.jpeg"
           alt="carving3"
-          className="rounded-xl object-cover h-[190px] w-full shadow-lg"
+          className="rounded-xl object-cover w-full shadow-lg
+                     h-[140px] sm:h-[165px] md:h-[190px] lg:h-[215px] xl:h-[240px]"
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.3 }}
         />

@@ -1,11 +1,45 @@
 "use client";
 
 import { Hammer, Shield, Award, Users, Layers } from "lucide-react";
+import { useEffect, useState } from "react";
 import AboutUs from "../components/about/aboutUs";
 import Navbar from "../components/layout/navbar";
 import Footer from "../components/layout/footer";
 
 export default function About() {
+  const [galleryProducts, setGalleryProducts] = useState<any[]>([]);
+  const [statsProducts, setStatsProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchGalleryProducts();
+  }, []);
+
+  const fetchGalleryProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/products`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Ambil 6 produk untuk gallery
+      setGalleryProducts(data.slice(0, 6));
+
+      // Ambil 4 produk untuk stats section (bisa dari index berbeda)
+      setStatsProducts(data.slice(6, 10));
+    } catch (error) {
+      console.error("Error fetching gallery products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section id="about" className="bg-white text-black">
       {/* Navbar */}
@@ -45,7 +79,7 @@ export default function About() {
             <h4 className="font-bold mb-2 text-lg">Quality</h4>
             <p className="text-gray-600 mb-6">
               We uphold the highest standards of craftsmanship and quality.
-              Here’s what makes us stand out.
+              Here's what makes us stand out.
             </p>
 
             <div className="flex gap-8 ">
@@ -67,13 +101,47 @@ export default function About() {
       </div>
 
       {/* Stats Section */}
-      <div className=" py-20">
-        <div className="container mx-auto px-6 grid md:grid-cols-2  gap-12 items-center">
-          <img
-            src="/product2..jpeg"
-            alt="Carving process"
-            className="rounded-xl shadow-lg object-cover"
-          />
+      <div className="py-20">
+        <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+          {/* Image Grid (4 images in grid layout) */}
+          <div className="grid grid-cols-3 gap-4">
+            {loading ? (
+              // Loading skeleton
+              <>
+                <div className="col-span-2 row-span-2 w-full h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] bg-gray-200 rounded-xl animate-pulse"></div>
+                <div className="w-full h-[140px] sm:h-[165px] md:h-[190px] lg:h-[215px] bg-gray-200 rounded-xl animate-pulse"></div>
+                <div className="w-full h-[140px] sm:h-[165px] md:h-[190px] lg:h-[215px] bg-gray-200 rounded-xl animate-pulse"></div>
+              </>
+            ) : (
+              <>
+                <img
+                  src={
+                    statsProducts[0]?.thumbnail_url || "/herosectionhome.jpeg"
+                  }
+                  alt={statsProducts[0]?.name || "Product 1"}
+                  className="rounded-xl object-cover shadow-lg col-span-2 row-span-2
+                           h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] w-full"
+                  style={{ objectPosition: "center 40%" }}
+                />
+
+                <img
+                  src={statsProducts[1]?.thumbnail_url || "/gridhome2.jpeg"}
+                  alt={statsProducts[1]?.name || "Product 2"}
+                  className="rounded-xl object-cover shadow-lg
+                           h-[140px] sm:h-[165px] md:h-[190px] lg:h-[215px] w-full"
+                />
+
+                <img
+                  src={statsProducts[2]?.thumbnail_url || "/gridhome3.jpeg"}
+                  alt={statsProducts[2]?.name || "Product 3"}
+                  className="rounded-xl object-cover shadow-lg
+                           h-[140px] sm:h-[165px] md:h-[190px] lg:h-[215px] w-full"
+                />
+              </>
+            )}
+          </div>
+
+          {/* Stats Grid */}
           <div className="place-items-center grid grid-cols-2 gap-8">
             {[
               { icon: Award, value: "15", label: "Years of Experience" },
@@ -92,48 +160,43 @@ export default function About() {
       </div>
 
       {/* Gallery */}
-      <div className="py-20 px-5 ">
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-4 ">
-          {[
-            "product1..jpeg",
-            "product2..jpeg",
-            "product3..jpeg",
-            "product4..jpeg",
-            "product5..jpeg",
-            "product6..jpeg",
-          ].map((img, i) => (
-            <img
-              key={i}
-              src={`/${img}`}
-              alt={`Gallery ${i + 1}`}
-              className="w-full h-64 object-cover rounded-xl"
-            />
-          ))}
-        </div>
-
-        {/* <div className="bg-black text-white py-12">
-          <div className="container mx-auto px-6 grid md:grid-cols-3 gap-10 text-center">
-            {[
-              {
-                title: "High Quality",
-                desc: "Our wooden furniture and carvings are made with the finest materials and craftsmanship.",
-              },
-              {
-                title: "Fast Delivery",
-                desc: "Quick and reliable shipping, bringing authentic Balinese craftsmanship to your home.",
-              },
-              {
-                title: "Best Warranty",
-                desc: "Enjoy our commitment to quality with a warranty protecting your handmade pieces.",
-              },
-            ].map((item) => (
-              <div key={item.title}>
-                <h4 className="font-bold text-lg mb-2">{item.title}</h4>
-                <p className="text-gray-300 text-sm">{item.desc}</p>
-              </div>
+      <div className="py-20 px-5">
+        {loading ? (
+          // Loading skeleton
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div
+                key={i}
+                className="w-full h-64 bg-gray-200 rounded-xl animate-pulse"
+              ></div>
             ))}
           </div>
-        </div> */}
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+            {galleryProducts.map((product, i) => (
+              <img
+                key={product.id}
+                src={product.thumbnail_url || "/placeholder.jpg"}
+                alt={product.name || `Gallery ${i + 1}`}
+                className="w-full h-64 object-cover rounded-xl hover:scale-105 transition-transform duration-300"
+                onError={(e) => {
+                  e.currentTarget.src = "/placeholder.jpg";
+                }}
+              />
+            ))}
+
+            {/* Jika produk kurang dari 6, tampilkan placeholder */}
+            {galleryProducts.length < 6 &&
+              Array.from({ length: 6 - galleryProducts.length }).map((_, i) => (
+                <div
+                  key={`placeholder-${i}`}
+                  className="w-full h-64 bg-gray-100 rounded-xl flex items-center justify-center"
+                >
+                  <p className="text-gray-400 text-sm">Coming Soon</p>
+                </div>
+              ))}
+          </div>
+        )}
       </div>
       <Footer />
     </section>

@@ -4,7 +4,7 @@ export default function AboutUs() {
   return (
     <main
       className="relative text-white  px-6 lg:px-20  bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/product5..jpeg')" }}
+      style={{ backgroundImage: "url('/gridhome2.jpeg')" }}
     >
       {/*  overlay gelap agar text tetap terbaca */}
       <div className="absolute inset-0 bg-black/80"></div>
@@ -70,9 +70,9 @@ export default function AboutUs() {
           transition={{ duration: 1, ease: "easeOut" }}
         >
           <img
-            src="/product2..jpeg"
+            src="/gridhome2.jpeg"
             alt="carving3"
-            className="rounded-xl object-cover h-[300px] w-full col-span-2"
+            className="rounded-xl object-cover h-[450px] w-full col-span-2"
           />
         </motion.div>
       </div>

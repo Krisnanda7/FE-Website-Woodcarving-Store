@@ -4,8 +4,7 @@ import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 
 export default function ContactSection() {
-  // Ganti nomor WhatsApp kamu di sini (gunakan format internasional tanpa 0 di depan)
-  const whatsappNumber = "6282144603278";
+  const whatsappNumber = "6281338166331";
   const message = "Halo, saya ingin memesan produk WoodCarving !";
 
   const handleWhatsApp = () => {
@@ -17,13 +16,13 @@ export default function ContactSection() {
 
   return (
     <section
-      className="relative  text-2xl-white py-20 px-10  bg-cover bg-center bg-no-repeat "
-      style={{ backgroundImage: "url('/product5..jpeg')" }}
+      className="relative text-white  px-6 lg:px-20  bg-center bg-no-repeat "
+      style={{ backgroundImage: "url('/gridhome2.jpeg')" }}
     >
       {/*  overlay gelap agar text tetap terbaca */}
-      <div className="absolute inset-0 bg-black/87"></div>
+      <div className="absolute inset-0 bg-black/85"></div>
 
-      <div className="py-10 px-5 md:py-20 md:px-20 lg:py-30 lg:px-20  max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 py-30 relative z-10">
         {/* Left Info Section */}
 
         <motion.div

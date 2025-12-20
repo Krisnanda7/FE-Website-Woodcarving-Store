@@ -17,16 +17,16 @@ export default function CartSidebar() {
 
   // === WHATSAPP ===
   const handleWhatsAppOrder = () => {
-    const phone = "6281234567890";
+    const phone = "6281338166331";
     const message = encodeURIComponent(
-      `🛒 *Order Baru dari Website:*\n\n${cart
+      `*ORDER BARU DARI WEBSITE:*\n\n${cart
         .map(
           (item) =>
             `• ${item.name} x${item.quantity} — Rp${
               Number(item.price) * item.quantity
             }`
         )
-        .join("\n")}\n\n💰 *Total:* Rp${total.toLocaleString()}`
+        .join("\n")}\n\n*TOTAL:* Rp${total.toLocaleString()}`
     );
     window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
   };

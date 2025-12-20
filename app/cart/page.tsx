@@ -25,20 +25,28 @@ export default function CartPage() {
 
   //button pesan ke whatsapp
   const handleWhatsAppOrder = () => {
-    const phone = "6281234567890";
-    const message = encodeURIComponent(
-      `🛒 *Order Baru dari Website:*\n\n${cart
-        .map(
-          (item) =>
-            `• ${item.name} x${item.quantity} — Rp${
-              Number(item.price) * item.quantity
-            }`
-        )
-        .join(
-          "\n"
-        )}\n\n💰 *Total:* Rp${total}\n\nSilakan konfirmasi pesanan ini.`
+    const phone = "6281338166331";
+
+    // Buat message lebih sederhana dan pastikan encoding benar
+    const orderList = cart
+      .map((item) => {
+        const itemPrice = Number(String(item.price).replace(/[^0-9]/g, ""));
+        const itemTotal = itemPrice * item.quantity;
+        return `${item.name} x${
+          item.quantity
+        } - Rp${itemTotal.toLocaleString()}`;
+      })
+      .join("\n");
+
+    const message = `Order Baru dari Website:\n\n${orderList}\n\nTotal: Rp${total.toLocaleString()}\n\nSilakan konfirmasi pesanan ini.`;
+
+    // Encode message dengan benar
+    const encodedMessage = encodeURIComponent(message);
+
+    window.open(
+      `https://api.whatsapp.com/send?phone=${phone}&text=${encodedMessage}`,
+      "_blank"
     );
-    window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
   };
 
   return (

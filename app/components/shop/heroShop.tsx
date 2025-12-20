@@ -5,10 +5,10 @@ export default function HeroShop() {
   return (
     <section
       className="relative text-white py-20 px-6 lg:px-20 bg-cover bg-center bg-no-repeat overflow-hidden"
-      style={{ backgroundImage: "url('/product2..jpeg')" }}
+      style={{ backgroundImage: "url('/herosectionshop.jpeg')" }}
     >
       {/* Overlay gelap */}
-      <div className="absolute inset-0 bg-black/80"></div>
+      <div className="absolute inset-0 bg-black/85"></div>
 
       <div className="py-20 max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 relative z-10">
         {/* ======= Text Section ======= */}
@@ -67,29 +67,37 @@ export default function HeroShop() {
         </motion.div>
 
         {/* ======= Image Grid ======= */}
+        {/* ===== IMAGE GRID ===== */}
         <motion.div
-          className="md:w-1/2 grid grid-cols-2 gap-4"
-          initial={{ opacity: 0, x: 50 }}
+          className="md:w-1/2 grid grid-cols-3 gap-4 relative z-10"
+          initial={{ opacity: 0, x: 80 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
+          transition={{ duration: 1, ease: "easeOut" }}
         >
           <motion.img
-            src="/product1..jpeg"
+            src="/herosectionshop.jpeg"
             alt="carving1"
-            className="rounded-xl object-cover h-[300px] w-full shadow-lg hover:scale-105 transition-transform"
-            whileHover={{ scale: 1.05 }}
+            className="rounded-xl object-cover w-full col-span-2 row-span-2 shadow-lg
+                     h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] xl:h-[500px]"
+            style={{ objectPosition: "center 40%" }}
           />
+
           <motion.img
-            src="/product2..jpeg"
+            src="/gridshop2.jpeg"
             alt="carving2"
-            className="rounded-xl object-cover h-[300px] w-full shadow-lg hover:scale-105 transition-transform"
+            className="rounded-xl object-cover w-full shadow-lg
+                     h-[140px] sm:h-[165px] md:h-[190px] lg:h-[215px] xl:h-[240px]"
             whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
           />
+
           <motion.img
-            src="/product2..jpeg"
+            src="/gridhome3.jpeg"
             alt="carving3"
-            className="rounded-xl object-cover h-[300px] w-full col-span-2 shadow-lg hover:scale-105 transition-transform"
+            className="rounded-xl object-cover w-full shadow-lg
+                     h-[140px] sm:h-[165px] md:h-[190px] lg:h-[215px] xl:h-[240px]"
             whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
           />
         </motion.div>
       </div>
