@@ -18,7 +18,7 @@ export default function ProductList() {
   const [sortBy, setSortBy] = useState<SortOption>("default");
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`)
       .then((res) => res.json())
       .then((data) => {
         const mapped = data.map((p: any) => ({

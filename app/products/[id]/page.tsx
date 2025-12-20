@@ -13,7 +13,7 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<any>(null);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
         console.log("API Response:", data); // untuk debug
