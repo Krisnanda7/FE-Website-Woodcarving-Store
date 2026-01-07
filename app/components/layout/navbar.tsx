@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, MapPin, Phone, Smartphone, Clock } from "lucide-react";
 import { useCartSidebarStore } from "@/store/useCartSidebarStore";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,10 +11,20 @@ export default function Navbar() {
 
   return (
     <nav className="bg-black text-white fixed w-full z-50 shadow-lg">
-      <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6 lg:px-10">
+      <div className="max-w-7xl mx-auto flex justify-between items-center py-3 px-6 lg:px-10">
         {/* Logo */}
-        <div className="font-bold text-2xl tracking-wide">
-          <a href="\">MutraWoodCarving </a>
+        <div className="flex items-center">
+          <Link href="/" className="flex items-center">
+            <div className="relative h-20 w-20 md:h-20 md:w-56">
+              <Image
+                src="/mutralogo.png"
+                alt="Mutra Wood Carving"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          </Link>
         </div>
 
         {/* Desktop Menu */}
@@ -47,7 +58,7 @@ export default function Navbar() {
         {/* Desktop Right Icons */}
         <div className="hidden md:flex gap-6 items-center text-sm">
           <button
-            className="hover:text-amber-500  transition-colors"
+            className="hover:text-amber-500 transition-colors"
             onClick={openCart}
           >
             Cart 🛒
@@ -122,7 +133,7 @@ export default function Navbar() {
             <p>
               <span className="text-white font-semibold">Address:</span>
               <br />
-              Gianyar, Bali,Indonesia
+              Gianyar, Bali, Indonesia
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -130,7 +141,7 @@ export default function Navbar() {
             <p>
               <span className="text-white font-semibold">Phone:</span>
               <br />
-              578–393–4937
+              +6281338166331
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -138,7 +149,7 @@ export default function Navbar() {
             <p>
               <span className="text-white font-semibold">Mobile:</span>
               <br />
-              578–393–4937
+              +6281338166331
             </p>
           </div>
           <div className="flex items-center gap-3">

@@ -115,9 +115,7 @@ export default function About() {
             ) : (
               <>
                 <img
-                  src={
-                    statsProducts[0]?.thumbnail_url || "/herosectionhome.jpeg"
-                  }
+                  src="/mutralogo.png"
                   alt={statsProducts[0]?.name || "Product 1"}
                   className="rounded-xl object-cover shadow-lg col-span-2 row-span-2
                            h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] w-full"
