@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WoodCarving",
+  title: "MutraWoodCarving",
   description:
     "Explore Mutra Wood Carving’s exquisite collection of handcrafted wooden furniture and authentic Balinese carvings.",
   icons: {
