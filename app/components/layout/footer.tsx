@@ -65,7 +65,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="hover:text-amber-500"
             >
-              082147324954
+              081338166331
             </a>
             <br />
             <a
