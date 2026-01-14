@@ -26,7 +26,7 @@ export default function About() {
         <div>
           <iframe
             className="rounded-xl w-full h-72"
-            src="https://www.youtube.com/embed/FBR9Ir7zQlc?si=ATlirSC0WMkFs-QL"
+            src="https://www.youtube.com/embed/JzAjgHSvA7Y?si=MYOr_-uiFmH6xfjT"
             title="Company Video"
             allowFullScreen // agar video bisa full screen
           />

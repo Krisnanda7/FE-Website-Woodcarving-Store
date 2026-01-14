@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description:
     "Explore Mutra Wood Carving’s exquisite collection of handcrafted wooden furniture and authentic Balinese carvings.",
   icons: {
-    icon: "/mutralogo.png",
+    icon: "/logo.png",
   },
 };
 
