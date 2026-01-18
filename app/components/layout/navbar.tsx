@@ -141,13 +141,13 @@ export default function Navbar() {
             <p>
               <span className="text-white font-semibold">Phone:</span>
               <br />
-              +6281338166331
+              +6282147324954
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <Smartphone size={18} className="text-amber-500" />
+            <Phone size={18} className="text-amber-500" />
             <p>
-              <span className="text-white font-semibold">Mobile:</span>
+              <span className="text-white font-semibold">Phone:</span>
               <br />
               +6281338166331
             </p>
