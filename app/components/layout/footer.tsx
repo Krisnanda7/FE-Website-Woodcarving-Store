@@ -30,16 +30,6 @@ export default function Footer() {
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-amber-500 transition-colors">
-                Cart
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-amber-500 transition-colors">
-                WishList
-              </a>
-            </li>
-            <li>
               <a
                 href={"/contact"}
                 className="hover:text-amber-500 transition-colors"
