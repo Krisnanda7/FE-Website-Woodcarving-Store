@@ -16,6 +16,7 @@ export default function ProductList() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 20000000]);
   const [sortBy, setSortBy] = useState<SortOption>("default");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`)
@@ -79,16 +80,16 @@ export default function ProductList() {
       minimumFractionDigits: 0,
     }).format(num);
 
-  const productsPerSection = 10;
-
-  const productSections = Array.from(
-    { length: Math.ceil(sortedProducts.length / productsPerSection) },
-    (_, index) =>
-      sortedProducts.slice(
-        index * productsPerSection,
-        index * productsPerSection + productsPerSection
-      )
+  const productsPerPage = 10;
+  const totalPages = Math.max(1, Math.ceil(sortedProducts.length / productsPerPage));
+  const effectivePage = Math.min(Math.max(currentPage, 1), totalPages);
+  const currentProducts = sortedProducts.slice(
+    (effectivePage - 1) * productsPerPage,
+    effectivePage * productsPerPage
   );
+
+  const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
   return (
     <section className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 px-6 lg:px-10 py-10 bg-white text-black">
@@ -119,29 +120,47 @@ export default function ProductList() {
           </select>
         </div>
 
-        {productSections.length === 0 ? (
+        {sortedProducts.length === 0 ? (
           <p className="text-center text-gray-500">No products found.</p>
         ) : (
-          productSections.map((section, sectionIndex) => (
-            <div key={sectionIndex} className="mb-10">
-              <div className="mb-5 flex items-center justify-between border-b border-gray-200 pb-3">
-                <h2 className="text-lg font-semibold">
-                  Section {sectionIndex + 1}
-                </h2>
-                <p className="text-sm text-gray-600">
-                  {section.length} items
-                </p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {section.map((p) => (
-                  <ProductCard
-                    key={p.id}
-                    product={{ ...p, price: formatRupiah(p.price) }}
-                  />
-                ))}
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {currentProducts.map((p) => (
+                <ProductCard
+                  key={p.id}
+                  product={{ ...p, price: formatRupiah(p.price) }}
+                />
+              ))}
+            </div>
+
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <p className="text-sm text-gray-600">
+                Showing {currentProducts.length} of {sortedProducts.length} results
+              </p>
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handlePrevPage}
+                  disabled={effectivePage === 1}
+                  className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-gray-50"
+                >
+                  Previous
+                </button>
+                <span className="text-sm text-gray-600">
+                  Page {effectivePage} of {totalPages}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleNextPage}
+                  disabled={effectivePage === totalPages}
+                  className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-gray-50"
+                >
+                  Next
+                </button>
               </div>
             </div>
-          ))
+          </>
         )}
       </div>
     </section>
