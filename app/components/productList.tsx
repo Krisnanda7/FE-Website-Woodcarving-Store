@@ -79,6 +79,17 @@ export default function ProductList() {
       minimumFractionDigits: 0,
     }).format(num);
 
+  const productsPerSection = 10;
+
+  const productSections = Array.from(
+    { length: Math.ceil(sortedProducts.length / productsPerSection) },
+    (_, index) =>
+      sortedProducts.slice(
+        index * productsPerSection,
+        index * productsPerSection + productsPerSection
+      )
+  );
+
   return (
     <section className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 px-6 lg:px-10 py-10 bg-white text-black">
       <div className="md:w-[280px] w-full">
@@ -108,14 +119,30 @@ export default function ProductList() {
           </select>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sortedProducts.map((p) => (
-            <ProductCard
-              key={p.id}
-              product={{ ...p, price: formatRupiah(p.price) }}
-            />
-          ))}
-        </div>
+        {productSections.length === 0 ? (
+          <p className="text-center text-gray-500">No products found.</p>
+        ) : (
+          productSections.map((section, sectionIndex) => (
+            <div key={sectionIndex} className="mb-10">
+              <div className="mb-5 flex items-center justify-between border-b border-gray-200 pb-3">
+                <h2 className="text-lg font-semibold">
+                  Section {sectionIndex + 1}
+                </h2>
+                <p className="text-sm text-gray-600">
+                  {section.length} items
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {section.map((p) => (
+                  <ProductCard
+                    key={p.id}
+                    product={{ ...p, price: formatRupiah(p.price) }}
+                  />
+                ))}
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </section>
   );
