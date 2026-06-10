@@ -2,6 +2,7 @@ import Navbar from "../components/layout/navbar";
 import HeroShop from "../components/shop/heroShop";
 import ProductList from "../components/productList";
 import Footer from "../components/layout/footer";
+import { Suspense } from "react";
 
 export default function ProductsPage() {
   return (
@@ -9,7 +10,9 @@ export default function ProductsPage() {
       <div className="bg-white min-h-screen">
         <Navbar />
         <HeroShop />
-        <ProductList />
+        <Suspense fallback={<div />}> 
+          <ProductList />
+        </Suspense>
         <Footer />
       </div>
     </>
