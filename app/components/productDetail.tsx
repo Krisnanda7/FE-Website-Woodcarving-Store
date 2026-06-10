@@ -52,11 +52,9 @@ export default function ProductDetail({ product }: any) {
         const fromId = searchParams?.get("fromId") || sessionStorage.getItem("productsReturnId");
 
         if (fromPage) {
-          // cleanup storage and navigate
-          sessionStorage.removeItem("productsReturnPage");
-          if (fromId) sessionStorage.removeItem("productsReturnId");
-          const hash = fromId ? `#product-${fromId}` : "";
-          router.push(`/products?page=${fromPage}${hash}`);
+          // navigate back including fromId query so ProductList can scroll
+          const qs = fromId ? `?page=${fromPage}&fromId=${fromId}` : `?page=${fromPage}`;
+          router.push(`/products${qs}`);
           return;
         }
       } catch (e) {
