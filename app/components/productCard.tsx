@@ -5,6 +5,7 @@ export default function ProductCard({ product, currentPage }: any) {
     if (typeof window !== "undefined" && currentPage) {
       try {
         sessionStorage.setItem("productsReturnPage", String(currentPage));
+        sessionStorage.setItem("productsReturnId", String(product.id));
       } catch (e) {
         // ignore
       }
@@ -12,6 +13,7 @@ export default function ProductCard({ product, currentPage }: any) {
   };
   return (
     <div
+      id={`product-${product.id}`}
       key={product.id}
       className=" rounded-2xl p-5 shadow-lg hover:scale-105  transition-transform duration-500 "
     >

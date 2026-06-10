@@ -169,7 +169,7 @@ export default function ProductList() {
                   type="button"
                   onClick={handlePrevPage}
                   disabled={effectivePage === 1}
-                  className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-gray-50"
+                  className="rounded-md border border-amber-600 bg-white px-4 py-2 text-sm font-medium text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-gray-50"
                 >
                   Previous
                 </button>
@@ -180,7 +180,7 @@ export default function ProductList() {
                   type="button"
                   onClick={handleNextPage}
                   disabled={effectivePage === totalPages}
-                  className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-gray-50"
+                  className="rounded-md border border-amber-600 bg-white px-4 py-2 text-sm font-medium text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-gray-50"
                 >
                   Next
                 </button>

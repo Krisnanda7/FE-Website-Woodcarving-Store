@@ -47,9 +47,13 @@ export default function ProductDetail({ product }: any) {
     if (typeof window !== "undefined") {
       try {
         const returnPage = sessionStorage.getItem("productsReturnPage");
+        const returnId = sessionStorage.getItem("productsReturnId");
         if (returnPage) {
+          // remove stored keys and navigate to page with optional hash
           sessionStorage.removeItem("productsReturnPage");
-          router.push(`/products?page=${returnPage}`);
+          if (returnId) sessionStorage.removeItem("productsReturnId");
+          const hash = returnId ? `#product-${returnId}` : "";
+          router.push(`/products?page=${returnPage}${hash}`);
           return;
         }
       } catch (e) {
