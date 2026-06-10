@@ -44,11 +44,25 @@ export default function ProductDetail({ product }: any) {
   };
 
   const handleBackToProducts = () => {
-    if (typeof window !== "undefined" && window.history.length > 1) {
-      router.back();
-    } else {
-      router.push("/products");
+    if (typeof window !== "undefined") {
+      try {
+        const returnPage = sessionStorage.getItem("productsReturnPage");
+        if (returnPage) {
+          sessionStorage.removeItem("productsReturnPage");
+          router.push(`/products?page=${returnPage}`);
+          return;
+        }
+      } catch (e) {
+        // ignore
+      }
+
+      if (window.history.length > 1) {
+        router.back();
+        return;
+      }
     }
+
+    router.push("/products");
   };
 
   if (!product) {

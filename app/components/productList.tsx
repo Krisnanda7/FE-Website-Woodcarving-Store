@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import ProductCard from "./productCard";
 import FilterSidebar from "./filterSideBar";
 
@@ -17,6 +18,7 @@ export default function ProductList() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 20000000]);
   const [sortBy, setSortBy] = useState<SortOption>("default");
   const [currentPage, setCurrentPage] = useState(1);
+
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`)
@@ -91,6 +93,29 @@ export default function ProductList() {
   const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
   const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
+  // Sync page with URL query param
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    const pageParam = searchParams?.get("page");
+    if (pageParam) {
+      const p = parseInt(pageParam, 10);
+      if (!isNaN(p)) setCurrentPage(Math.min(Math.max(p, 1), totalPages));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, totalPages]);
+
+  useEffect(() => {
+    // update URL when currentPage changes
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.set("page", String(currentPage));
+      router.replace(url.pathname + url.search);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
+
   return (
     <section className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 px-6 lg:px-10 py-10 bg-white text-black">
       <div className="md:w-[280px] w-full">
@@ -129,6 +154,7 @@ export default function ProductList() {
                 <ProductCard
                   key={p.id}
                   product={{ ...p, price: formatRupiah(p.price) }}
+                  currentPage={effectivePage}
                 />
               ))}
             </div>
