@@ -43,6 +43,14 @@ export default function ProductDetail({ product }: any) {
     openCart();
   };
 
+  const handleBackToProducts = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/products");
+    }
+  };
+
   if (!product) {
     return (
       <main className="bg-white py-30 px-5">
@@ -162,7 +170,7 @@ export default function ProductDetail({ product }: any) {
 
           {/* BUTTON LIHAT PRODUK LAINNYA */}
           <button
-            onClick={() => router.push("/products")}
+            onClick={handleBackToProducts}
             className="w-full border-2 border-amber-600 text-amber-600 hover:bg-amber-50 px-6 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 mb-6"
           >
             <svg
