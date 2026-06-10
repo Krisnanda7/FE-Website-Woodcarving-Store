@@ -79,14 +79,12 @@ export default function ProductList() {
     startTransition(() => {
       setCurrentPage((prev) => Math.max(prev - 1, 1));
     });
-    gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const handleNextPage = () => {
     startTransition(() => {
       setCurrentPage((prev) => Math.min(prev + 1, totalPages));
     });
-    gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   // Sync page dari URL (hanya saat pertama load / fromId restore)
@@ -112,7 +110,6 @@ useEffect(() => {
 
   const url = new URL(window.location.href);
 
-  // ✅ Jangan timpa URL kalau fromId masih ada (sedang proses restore scroll)
   if (url.searchParams.has("fromId")) return;
 
   url.searchParams.set("page", String(currentPage));
@@ -120,7 +117,6 @@ useEffect(() => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [currentPage]);
 
-  // ✅ Restore scroll ke produk yang diklik sebelumnya
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
