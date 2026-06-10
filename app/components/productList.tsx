@@ -74,17 +74,19 @@ export default function ProductList() {
     effectivePage * productsPerPage
   );
 
-  // ✅ Ganti halaman tanpa scroll ke atas — scroll ke grid saja
+  //  halaman tanpa scroll ke atas — scroll ke grid saja
   const handlePrevPage = () => {
     startTransition(() => {
       setCurrentPage((prev) => Math.max(prev - 1, 1));
     });
+    window.scrollBy({ top: -150, behavior: "smooth" });
   };
 
   const handleNextPage = () => {
     startTransition(() => {
       setCurrentPage((prev) => Math.min(prev + 1, totalPages));
     });
+    window.scrollBy({ top: -150, behavior: "smooth" });
   };
 
   // Sync page dari URL (hanya saat pertama load / fromId restore)
@@ -207,7 +209,7 @@ useEffect(() => {
                   type="button"
                   onClick={handlePrevPage}
                   disabled={effectivePage === 1 || isPending}
-                  className="rounded-md border border-amber-600 bg-white px-4 py-2 text-sm font-medium text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-amber-700"
+                  className="rounded-md border border-amber-600 bg-white px-4 py-2 text-sm font-medium text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-amber-700 hover:text-white"
                 >
                   Previous
                 </button>
@@ -218,7 +220,7 @@ useEffect(() => {
                   type="button"
                   onClick={handleNextPage}
                   disabled={effectivePage === totalPages || isPending}
-                  className="rounded-md border border-amber-600 bg-white px-4 py-2 text-sm font-medium text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-amber-700"
+                  className="rounded-md border border-amber-600 bg-white px-4 py-2 text-sm font-medium text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-amber-700 hover:text-white"
                 >
                   Next
                 </button>
