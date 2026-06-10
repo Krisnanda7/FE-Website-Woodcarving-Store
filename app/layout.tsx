@@ -19,6 +19,22 @@ export const metadata: Metadata = {
   title: "MutraWoodCarving",
   description:
     "Explore Mutra Wood Carving’s exquisite collection of handcrafted wooden furniture and authentic Balinese carvings.",
+  openGraph: {
+    title: "Balinese Handcrafted Wooden Furniture & Carvings | MutraWoodCarving",
+    description:
+      "Explore Mutra Wood Carving’s exquisite collection of handcrafted wooden furniture and authentic Balinese carvings.",
+    url: "https://mutrawoodcarving.com",
+    siteName: "MutraWoodCarving",
+      images: [
+        {
+          url: "https://mutrawoodcarving.com/logo.png",
+          width: 1200,
+          height: 630,
+          alt: "Mutra Wood Carving - Handcrafted Wooden Furniture and Balinese Carvings",
+        },
+      ],
+    type: "website",
+  },
   icons: {
     icon: "/logo.png",
   },
