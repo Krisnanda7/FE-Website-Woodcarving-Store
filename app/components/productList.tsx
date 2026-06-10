@@ -144,8 +144,15 @@ export default function ProductList() {
         return false;
       };
 
-      attemptScroll();
-      setTimeout(attemptScroll, 200);
+        // Retry loop: try immediately and then periodically for up to ~2s
+        if (attemptScroll()) return;
+        let tries = 0;
+        const maxTries = 20;
+        const interval = 100;
+        const timer = setInterval(() => {
+          tries += 1;
+          if (attemptScroll() || tries >= maxTries) clearInterval(timer);
+        }, interval);
     } catch (e) {
       // ignore
     }
