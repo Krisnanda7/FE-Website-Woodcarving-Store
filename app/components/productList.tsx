@@ -80,7 +80,7 @@ export default function ProductList() {
       minimumFractionDigits: 0,
     }).format(num);
 
-  const productsPerPage = 10;
+  const productsPerPage = 9;
   const totalPages = Math.max(1, Math.ceil(sortedProducts.length / productsPerPage));
   const effectivePage = Math.min(Math.max(currentPage, 1), totalPages);
   const currentProducts = sortedProducts.slice(
