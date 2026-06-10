@@ -106,14 +106,19 @@ export default function ProductList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, totalPages]);
 
-  // Update URL saat page berubah (tanpa trigger scroll)
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const url = new URL(window.location.href);
-    url.searchParams.set("page", String(currentPage));
-    router.replace(url.pathname + url.search, { scroll: false }); // ✅ { scroll: false } mencegah scroll ke top
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+ // Update URL saat page berubah (tanpa trigger scroll)
+useEffect(() => {
+  if (typeof window === "undefined") return;
+
+  const url = new URL(window.location.href);
+
+  // ✅ Jangan timpa URL kalau fromId masih ada (sedang proses restore scroll)
+  if (url.searchParams.has("fromId")) return;
+
+  url.searchParams.set("page", String(currentPage));
+  router.replace(url.pathname + url.search, { scroll: false });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [currentPage]);
 
   // ✅ Restore scroll ke produk yang diklik sebelumnya
   useEffect(() => {
