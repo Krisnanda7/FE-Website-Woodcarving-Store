@@ -1,16 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import ProductCard from "./productCard";
 import FilterSidebar from "./filterSideBar";
 
-type SortOption =
-  | "default"
-  | "price-low"
-  | "price-high"
-  | "name-asc"
-  | "name-desc";
+type SortOption = "default" | "price-low" | "price-high" | "name-asc" | "name-desc";
 
 export default function ProductList() {
   const [products, setProducts] = useState<any[]>([]);
@@ -18,7 +13,12 @@ export default function ProductList() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 20000000]);
   const [sortBy, setSortBy] = useState<SortOption>("default");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isPending, startTransition] = useTransition();
+  const gridRef = useRef<HTMLDivElement>(null);
+  const isRestoringScroll = useRef(false); // flag: sedang restore scroll, skip scroll-to-top
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`)
@@ -37,50 +37,34 @@ export default function ProductList() {
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     );
+    setCurrentPage(1);
   };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy(e.target.value as SortOption);
+    setCurrentPage(1);
   };
 
-  // Filter products
   const filteredProducts = products.filter((p) => {
-    const matchCategory =
-      selectedCategories.length === 0 ||
-      selectedCategories.includes(p.category);
-
+    const matchCategory = selectedCategories.length === 0 || selectedCategories.includes(p.category);
     const matchPrice = p.price >= priceRange[0] && p.price <= priceRange[1];
-
     return matchCategory && matchPrice;
   });
 
-  // Sort products
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
-      case "price-low":
-        return a.price - b.price; // Low to high
-      case "price-high":
-        return b.price - a.price; // High to low
-      case "name-asc":
-        return a.name.localeCompare(b.name); // A to Z
-      case "name-desc":
-        return b.name.localeCompare(a.name); // Z to A
-      case "default":
-      default:
-        return 0; // Original order
+      case "price-low": return a.price - b.price;
+      case "price-high": return b.price - a.price;
+      case "name-asc": return a.name.localeCompare(b.name);
+      case "name-desc": return b.name.localeCompare(a.name);
+      default: return 0;
     }
   });
 
   const formatRupiah = (num: number) =>
-    new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    }).format(num);
+    new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(num);
 
   const productsPerPage = 9;
   const totalPages = Math.max(1, Math.ceil(sortedProducts.length / productsPerPage));
@@ -90,15 +74,31 @@ export default function ProductList() {
     effectivePage * productsPerPage
   );
 
-  const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  // ✅ Ganti halaman tanpa scroll ke atas — scroll ke grid saja
+  const handlePrevPage = () => {
+    startTransition(() => {
+      setCurrentPage((prev) => Math.max(prev - 1, 1));
+    });
+    gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
-  // Sync page with URL query param
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const handleNextPage = () => {
+    startTransition(() => {
+      setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+    });
+    gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
+  // Sync page dari URL (hanya saat pertama load / fromId restore)
   useEffect(() => {
     const pageParam = searchParams?.get("page");
+    const fromId = searchParams?.get("fromId");
+
+    if (fromId) {
+      // Ini adalah kembali dari detail — set flag restore
+      isRestoringScroll.current = true;
+    }
+
     if (pageParam) {
       const p = parseInt(pageParam, 10);
       if (!isNaN(p)) setCurrentPage(Math.min(Math.max(p, 1), totalPages));
@@ -106,17 +106,16 @@ export default function ProductList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, totalPages]);
 
+  // Update URL saat page berubah (tanpa trigger scroll)
   useEffect(() => {
-    // update URL when currentPage changes
-    if (typeof window !== "undefined") {
-      const url = new URL(window.location.href);
-      url.searchParams.set("page", String(currentPage));
-      router.replace(url.pathname + url.search);
-    }
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("page", String(currentPage));
+    router.replace(url.pathname + url.search, { scroll: false }); // ✅ { scroll: false } mencegah scroll ke top
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
-  // Scroll to returned product if `fromId` present in URL or sessionStorage
+  // ✅ Restore scroll ke produk yang diklik sebelumnya
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
@@ -128,34 +127,28 @@ export default function ProductList() {
         const el = document.getElementById(scrollToId);
         if (el) {
           el.scrollIntoView({ behavior: "smooth", block: "center" });
-          // clean up
           sessionStorage.removeItem("productsReturnId");
           sessionStorage.removeItem("productsReturnPage");
+          isRestoringScroll.current = false;
 
-          // remove fromId/fromPage from URL if present
           const url = new URL(window.location.href);
           if (url.searchParams.has("fromId") || url.searchParams.has("fromPage")) {
             url.searchParams.delete("fromId");
             url.searchParams.delete("fromPage");
-            router.replace(url.pathname + url.search + (url.hash || ""));
+            router.replace(url.pathname + url.search, { scroll: false });
           }
           return true;
         }
         return false;
       };
 
-        // Retry loop: try immediately and then periodically for up to ~2s
-        if (attemptScroll()) return;
-        let tries = 0;
-        const maxTries = 20;
-        const interval = 100;
-        const timer = setInterval(() => {
-          tries += 1;
-          if (attemptScroll() || tries >= maxTries) clearInterval(timer);
-        }, interval);
-    } catch (e) {
-      // ignore
-    }
+      if (attemptScroll()) return;
+      let tries = 0;
+      const timer = setInterval(() => {
+        tries++;
+        if (attemptScroll() || tries >= 20) clearInterval(timer);
+      }, 100);
+    } catch (e) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentProducts, searchParams]);
 
@@ -183,8 +176,6 @@ export default function ProductList() {
             <option value="default">Default sorting</option>
             <option value="price-low">Price: low to high</option>
             <option value="price-high">Price: high to low</option>
-            {/* <option value="name-asc">Name: A to Z</option>
-            <option value="name-desc">Name: Z to A</option> */}
           </select>
         </div>
 
@@ -192,7 +183,11 @@ export default function ProductList() {
           <p className="text-center text-gray-500">No products found.</p>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* ✅ ref dipasang di grid untuk scroll target pagination */}
+            <div
+              ref={gridRef}
+              className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 transition-opacity duration-200 ${isPending ? "opacity-60" : "opacity-100"}`}
+            >
               {currentProducts.map((p) => (
                 <ProductCard
                   key={p.id}
@@ -206,12 +201,11 @@ export default function ProductList() {
               <p className="text-sm text-gray-600">
                 Showing {currentProducts.length} of {sortedProducts.length} results
               </p>
-
               <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={handlePrevPage}
-                  disabled={effectivePage === 1}
+                  disabled={effectivePage === 1 || isPending}
                   className="rounded-md border border-amber-600 bg-white px-4 py-2 text-sm font-medium text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-amber-700"
                 >
                   Previous
@@ -222,7 +216,7 @@ export default function ProductList() {
                 <button
                   type="button"
                   onClick={handleNextPage}
-                  disabled={effectivePage === totalPages}
+                  disabled={effectivePage === totalPages || isPending}
                   className="rounded-md border border-amber-600 bg-white px-4 py-2 text-sm font-medium text-gray-800 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-amber-700"
                 >
                   Next

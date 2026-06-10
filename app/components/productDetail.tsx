@@ -55,7 +55,7 @@ export default function ProductDetail({ product }: any) {
           // navigate back including fromId query and hash so ProductList can scroll
           const qs = fromId ? `?page=${fromPage}&fromId=${fromId}` : `?page=${fromPage}`;
           const hash = fromId ? `#product-${fromId}` : "";
-          router.push(`/products${qs}${hash}`);
+          router.push(`/products${qs}${hash}`, { scroll: false });
           return;
         }
       } catch (e) {
