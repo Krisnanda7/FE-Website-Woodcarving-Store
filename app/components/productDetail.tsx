@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCartStore } from "@/store/useCartStore";
 import { useWishlistStore } from "@/store/useWishListStore";
 import { useCartSidebarStore } from "@/store/useCartSidebarStore";
 
 export default function ProductDetail({ product }: any) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const images = product?.gallery_urls || [];
   const PLACEHOLDER = "https://placehold.co/600x400/e5e5e5/666?text=No+Image";
 
@@ -46,14 +47,16 @@ export default function ProductDetail({ product }: any) {
   const handleBackToProducts = () => {
     if (typeof window !== "undefined") {
       try {
-        const returnPage = sessionStorage.getItem("productsReturnPage");
-        const returnId = sessionStorage.getItem("productsReturnId");
-        if (returnPage) {
-          // remove stored keys and navigate to page with optional hash
+        // prefer query params if present
+        const fromPage = searchParams?.get("fromPage") || sessionStorage.getItem("productsReturnPage");
+        const fromId = searchParams?.get("fromId") || sessionStorage.getItem("productsReturnId");
+
+        if (fromPage) {
+          // cleanup storage and navigate
           sessionStorage.removeItem("productsReturnPage");
-          if (returnId) sessionStorage.removeItem("productsReturnId");
-          const hash = returnId ? `#product-${returnId}` : "";
-          router.push(`/products?page=${returnPage}${hash}`);
+          if (fromId) sessionStorage.removeItem("productsReturnId");
+          const hash = fromId ? `#product-${fromId}` : "";
+          router.push(`/products?page=${fromPage}${hash}`);
           return;
         }
       } catch (e) {

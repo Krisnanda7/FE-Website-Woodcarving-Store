@@ -116,6 +116,42 @@ export default function ProductList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
+  // Scroll to returned product if `fromId` present in URL or sessionStorage
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const fromId = searchParams?.get("fromId") || sessionStorage.getItem("productsReturnId");
+      if (!fromId) return;
+
+      const scrollToId = `product-${fromId}`;
+      const attemptScroll = () => {
+        const el = document.getElementById(scrollToId);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          // clean up
+          sessionStorage.removeItem("productsReturnId");
+          sessionStorage.removeItem("productsReturnPage");
+
+          // remove fromId/fromPage from URL if present
+          const url = new URL(window.location.href);
+          if (url.searchParams.has("fromId") || url.searchParams.has("fromPage")) {
+            url.searchParams.delete("fromId");
+            url.searchParams.delete("fromPage");
+            router.replace(url.pathname + url.search + (url.hash || ""));
+          }
+          return true;
+        }
+        return false;
+      };
+
+      attemptScroll();
+      setTimeout(attemptScroll, 200);
+    } catch (e) {
+      // ignore
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentProducts, searchParams]);
+
   return (
     <section className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 px-6 lg:px-10 py-10 bg-white text-black">
       <div className="md:w-[280px] w-full">
