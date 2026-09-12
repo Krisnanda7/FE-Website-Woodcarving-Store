@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 
 export default function ContactSection() {
-  const whatsappNumber = "6281338166331";
+  const whatsappNumber = "6282147324954";
   const message = "Halo, saya ingin memesan produk WoodCarving !";
 
   const handleWhatsApp = () => {

@@ -17,7 +17,7 @@ export default function CartSidebar() {
 
   // === WHATSAPP ===
   const handleWhatsAppOrder = () => {
-    const phone = "6281338166331";
+    const phone = "6282147324954";
     const message = encodeURIComponent(
       `*ORDER BARU DARI WEBSITE:*\n\n${cart
         .map(

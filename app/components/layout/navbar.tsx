@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, MapPin, Phone, Smartphone, Clock } from "lucide-react";
 import { useCartSidebarStore } from "@/store/useCartSidebarStore";
 import Image from "next/image";
+import { Clock, MapPin, Menu, Phone, X } from "lucide-react";
+
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);

@@ -25,7 +25,7 @@ export default function CartPage() {
 
   //button pesan ke whatsapp
   const handleWhatsAppOrder = () => {
-    const phone = "6281338166331";
+    const phone = "6282147324954";
 
     // Buat message lebih sederhana dan pastikan encoding benar
     const orderList = cart
