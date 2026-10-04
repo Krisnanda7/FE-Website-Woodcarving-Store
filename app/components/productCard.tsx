@@ -21,7 +21,7 @@ export default function ProductCard({ product, currentPage }: any) {
     <div
       id={`product-${product.id}`}
       key={product.id}
-      className=" rounded-2xl p-5 shadow-lg hover:scale-105  transition-transform duration-500 "
+      className="rounded-2xl p-5 shadow-lg hover:scale-105 transition-transform duration-500 flex flex-col h-full"
     >
       <Link href={`/products/${product.id}?fromPage=${currentPage || 1}&fromId=${product.id}`} onPointerDown={setReturnPage} onClick={setReturnPage}>
         <img
@@ -41,31 +41,42 @@ export default function ProductCard({ product, currentPage }: any) {
         <p className="text-center text-black font-medium">{product.price}</p>
       </a>
 
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          const { addToCompare, removeFromCompare } = useCompareStore.getState();
-          if (isCompared) {
-            removeFromCompare(product.id);
-          } else {
-            if (compareList.length >= 3) {
-              alert("You can only compare up to 3 products at a time.");
+      <div className="mt-auto">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const { addToCompare, removeFromCompare } = useCompareStore.getState();
+            if (isCompared) {
+              removeFromCompare(product.id);
             } else {
-              addToCompare({
-                id: product.id,
-                name: product.name,
-                price: typeof product.price === 'string' ? Number(product.price.replace(/[^0-9]/g, '')) : product.price,
-                image: product.image,
-                category: product.category,
-              });
+              if (compareList.length >= 3) {
+                alert("You can only compare up to 3 products at a time.");
+              } else {
+                addToCompare({
+                  id: product.id,
+                  name: product.name,
+                  price: typeof product.price === 'string' ? Number(product.price.replace(/[^0-9]/g, '')) : product.price,
+                  image: product.image,
+                  category: product.category,
+                });
+              }
             }
-          }
-        }}
-        className={`w-full mt-4 border px-4 py-2 rounded-lg font-medium transition ${isCompared ? 'bg-amber-600 text-white border-amber-600 hover:bg-amber-700' : 'border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white'}`}
-      >
-        {isCompared ? "Remove from Compare" : "Compare"}
-      </button>
+          }}
+          className={`w-full mt-4 border px-4 py-2 rounded-lg font-medium transition ${isCompared ? 'bg-amber-600 text-white border-amber-600 hover:bg-amber-700' : 'border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white'}`}
+        >
+          {isCompared ? "Remove from Compare" : "Compare"}
+        </button>
+
+        <Link
+          href={`/products/${product.id}?fromPage=${currentPage || 1}&fromId=${product.id}`}
+          onPointerDown={setReturnPage}
+          onClick={setReturnPage}
+          className="w-full mt-2 border border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white px-4 py-2 rounded-lg font-medium transition block text-center"
+        >
+          Lihat Produk
+        </Link>
+      </div>
     </div>
   );
 }
