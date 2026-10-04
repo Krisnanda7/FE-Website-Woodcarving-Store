@@ -3,6 +3,7 @@
 import { Heart, ShoppingCart, Eye } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useCurrencyStore, formatPrice } from "@/store/useCurrencyStore";
 
 interface Product {
   id: number;
@@ -13,6 +14,7 @@ interface Product {
 }
 
 export default function HeroMade() {
+  const { currency, exchangeRate } = useCurrencyStore();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -124,7 +126,7 @@ export default function HeroMade() {
               {product.name}
             </h3>
             <p className="text-gray-800 font-medium mt-1">
-              Rp{product.price.toLocaleString("id-ID")}
+              {formatPrice(Number(product.price), currency, exchangeRate)}
             </p>
           </div>
         ))}

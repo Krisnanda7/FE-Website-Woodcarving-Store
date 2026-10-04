@@ -2,18 +2,21 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface Product {
+  cartItemId?: string; // To differentiate same products with different engravings
   id: string;
   name: string;
   price: number;
   image: string;
   quantity: number;
+  engravingText?: string;
+  engravingFont?: string;
 }
 
 interface CartState {
   cart: Product[];
   addToCart: (product: Product) => void;
-  removeFromCart: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  removeFromCart: (idOrCartItemId: string) => void;
+  updateQuantity: (idOrCartItemId: string, quantity: number) => void;
   clearCart: () => void;
 }
 
@@ -24,28 +27,33 @@ export const useCartStore = create<CartState>()(
 
       addToCart: (product) =>
         set((state) => {
-          const existing = state.cart.find((item) => item.id === product.id);
+          const itemIdentifier = product.cartItemId || product.id;
+          const existing = state.cart.find(
+            (item) => (item.cartItemId || item.id) === itemIdentifier
+          );
           if (existing) {
             return {
               cart: state.cart.map((item) =>
-                item.id === product.id
+                (item.cartItemId || item.id) === itemIdentifier
                   ? { ...item, quantity: item.quantity + product.quantity }
                   : item
               ),
             };
           }
-          return { cart: [...state.cart, product] };
+          // Ensure it has a cartItemId for future reference
+          const newProduct = { ...product, cartItemId: itemIdentifier };
+          return { cart: [...state.cart, newProduct] };
         }),
 
-      removeFromCart: (id) =>
+      removeFromCart: (idOrCartItemId) =>
         set((state) => ({
-          cart: state.cart.filter((item) => item.id !== id),
+          cart: state.cart.filter((item) => (item.cartItemId || item.id) !== idOrCartItemId),
         })),
 
-      updateQuantity: (id, quantity) =>
+      updateQuantity: (idOrCartItemId, quantity) =>
         set((state) => ({
           cart: state.cart.map((item) =>
-            item.id === id ? { ...item, quantity } : item
+            (item.cartItemId || item.id) === idOrCartItemId ? { ...item, quantity } : item
           ),
         })),
 

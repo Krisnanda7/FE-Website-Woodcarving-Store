@@ -1,8 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useCompareStore } from "@/store/useCompareStore";
 
 export default function ProductCard({ product, currentPage }: any) {
+  const compareList = useCompareStore((state) => state.compareList);
+  const isCompared = compareList.some((item) => item.id === product.id);
+
   const setReturnPage = () => {
     if (typeof window !== "undefined" && currentPage) {
       try {
@@ -36,6 +40,32 @@ export default function ProductCard({ product, currentPage }: any) {
         </p>
         <p className="text-center text-black font-medium">{product.price}</p>
       </a>
+
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          const { addToCompare, removeFromCompare } = useCompareStore.getState();
+          if (isCompared) {
+            removeFromCompare(product.id);
+          } else {
+            if (compareList.length >= 3) {
+              alert("You can only compare up to 3 products at a time.");
+            } else {
+              addToCompare({
+                id: product.id,
+                name: product.name,
+                price: typeof product.price === 'string' ? Number(product.price.replace(/[^0-9]/g, '')) : product.price,
+                image: product.image,
+                category: product.category,
+              });
+            }
+          }
+        }}
+        className={`w-full mt-4 border px-4 py-2 rounded-lg font-medium transition ${isCompared ? 'bg-amber-600 text-white border-amber-600 hover:bg-amber-700' : 'border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white'}`}
+      >
+        {isCompared ? "Remove from Compare" : "Compare"}
+      </button>
     </div>
   );
 }

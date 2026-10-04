@@ -2,13 +2,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCartSidebarStore } from "@/store/useCartSidebarStore";
+import { useCompareStore } from "@/store/useCompareStore";
 import Image from "next/image";
-import { Clock, MapPin, Menu, Phone, X } from "lucide-react";
-
+import { Clock, MapPin, Menu, Phone, X } from "lucide-react";import CurrencyToggle from "./currencyToggle";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const openCart = useCartSidebarStore((s) => s.openCart);
+  const compareCount = useCompareStore((s) => s.compareList.length);
 
   return (
     <nav className="bg-black text-white fixed w-full z-50 shadow-lg">
@@ -58,6 +59,13 @@ export default function Navbar() {
 
         {/* Desktop Right Icons */}
         <div className="hidden md:flex gap-6 items-center text-sm">
+          <CurrencyToggle />
+          <Link
+            href="/compare"
+            className="hover:text-amber-500 transition-colors"
+          >
+            Compare {compareCount > 0 && `(${compareCount})`}
+          </Link>
           <button
             className="hover:text-amber-500 transition-colors"
             onClick={openCart}
@@ -119,12 +127,22 @@ export default function Navbar() {
           >
             Contact Us
           </Link>
+          <Link
+            href="/compare"
+            onClick={() => setIsOpen(false)}
+            className="hover:text-amber-500 transition-colors"
+          >
+            Compare {compareCount > 0 && `(${compareCount})`}
+          </Link>
           <button
             onClick={openCart}
             className="hover:text-amber-500 transition-colors self-start"
           >
             Cart 🛒
           </button>
+          <div className="pt-2">
+            <CurrencyToggle />
+          </div>
         </div>
 
         {/* Contact Info */}

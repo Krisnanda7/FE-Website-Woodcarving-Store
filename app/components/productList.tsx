@@ -4,10 +4,12 @@ import { useEffect, useState, useTransition, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import ProductCard from "./productCard";
 import FilterSidebar from "./filterSideBar";
+import { useCurrencyStore, formatPrice } from "@/store/useCurrencyStore";
 
 type SortOption = "default" | "price-low" | "price-high" | "name-asc" | "name-desc";
 
 export default function ProductList() {
+  const { currency, exchangeRate } = useCurrencyStore();
   const [products, setProducts] = useState<any[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 20000000]);
@@ -63,8 +65,6 @@ export default function ProductList() {
     }
   });
 
-  const formatRupiah = (num: number) =>
-    new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(num);
 
   const productsPerPage = 9;
   const totalPages = Math.max(1, Math.ceil(sortedProducts.length / productsPerPage));
@@ -194,7 +194,7 @@ useEffect(() => {
               {currentProducts.map((p) => (
                 <ProductCard
                   key={p.id}
-                  product={{ ...p, price: formatRupiah(p.price) }}
+                  product={{ ...p, price: formatPrice(p.price, currency, exchangeRate) }}
                   currentPage={effectivePage}
                 />
               ))}

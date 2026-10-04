@@ -5,8 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCartStore } from "@/store/useCartStore";
 import { useWishlistStore } from "@/store/useWishListStore";
 import { useCartSidebarStore } from "@/store/useCartSidebarStore";
+import { useCurrencyStore, formatPrice } from "@/store/useCurrencyStore";
 
 export default function ProductDetail({ product }: any) {
+  const { currency, exchangeRate } = useCurrencyStore();
   const router = useRouter();
   const searchParams = useSearchParams();
   const images = product?.gallery_urls || [];
@@ -25,6 +27,12 @@ export default function ProductDetail({ product }: any) {
   }, [product, images]);
 
   const [quantity, setQuantity] = useState(1);
+  const [isEngravingEnabled, setIsEngravingEnabled] = useState(false);
+  const [engravingText, setEngravingText] = useState("");
+  const [engravingFont, setEngravingFont] = useState("font-serif");
+
+  const ENGRAVING_PRICE = 50000;
+  const currentPrice = isEngravingEnabled ? product.price + ENGRAVING_PRICE : product.price;
 
   const addToCart = useCartStore((state) => state.addToCart);
   const addToWishlist = useWishlistStore((state) => state.toggleWishlist);
@@ -35,11 +43,14 @@ export default function ProductDetail({ product }: any) {
 
   const handleAddToCart = () => {
     addToCart({
+      cartItemId: isEngravingEnabled && engravingText ? `${product.id}-${engravingText}-${engravingFont}` : product.id,
       id: product.id,
       name: product.name,
-      price: product.price,
+      price: currentPrice,
       image: product.thumbnail_url || PLACEHOLDER,
       quantity,
+      engravingText: isEngravingEnabled ? engravingText : undefined,
+      engravingFont: isEngravingEnabled ? engravingFont : undefined,
     });
     openCart();
   };
@@ -94,7 +105,7 @@ export default function ProductDetail({ product }: any) {
       <section className="max-w-7xl mx-auto px-6 lg:px-10 py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 text-gray-800">
         {/* GAMBAR */}
         <div>
-          <div className="relative bg-gray-100 rounded-2xl shadow overflow-hidden">
+          <div className="relative bg-gray-100 rounded-2xl shadow overflow-hidden flex items-center justify-center">
             <img
               src={mainImage || PLACEHOLDER}
               alt={product.name}
@@ -103,6 +114,16 @@ export default function ProductDetail({ product }: any) {
                 e.currentTarget.src = PLACEHOLDER;
               }}
             />
+            {isEngravingEnabled && engravingText && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <span 
+                  className={`text-4xl text-amber-900/60 mix-blend-multiply drop-shadow-sm ${engravingFont}`}
+                  style={{ textShadow: "1px 1px 0px rgba(255,255,255,0.3), -1px -1px 0px rgba(0,0,0,0.5)" }}
+                >
+                  {engravingText}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* GALLERY THUMBNAILS */}
@@ -152,8 +173,49 @@ export default function ProductDetail({ product }: any) {
           </h1>
 
           <p className="text-amber-600 text-xl font-bold mb-6">
-            Rp {product.price?.toLocaleString("id-ID")}
+            {formatPrice(currentPrice, currency, exchangeRate)}
+            {isEngravingEnabled && <span className="text-sm font-normal text-gray-500 ml-2">(+{formatPrice(ENGRAVING_PRICE, currency, exchangeRate)} for engraving)</span>}
           </p>
+
+          {/* CUSTOM ENGRAVING SECTION */}
+          <div className="mb-6 p-4 border border-amber-200 bg-amber-50 rounded-xl">
+            <label className="flex items-center gap-3 cursor-pointer mb-2">
+              <input 
+                type="checkbox" 
+                checked={isEngravingEnabled} 
+                onChange={(e) => setIsEngravingEnabled(e.target.checked)}
+                className="w-5 h-5 text-amber-600 rounded focus:ring-amber-500"
+              />
+              <span className="font-semibold text-gray-800">Add Custom Engraving (+{formatPrice(ENGRAVING_PRICE, currency, exchangeRate)})</span>
+            </label>
+            
+            {isEngravingEnabled && (
+              <div className="mt-4 space-y-4 animate-in slide-in-from-top-2 duration-300">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Your Custom Text</label>
+                  <input 
+                    type="text" 
+                    value={engravingText}
+                    onChange={(e) => setEngravingText(e.target.value.substring(0, 20))}
+                    placeholder="Enter name or short message (max 20 chars)"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 bg-white text-gray-900"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Font Style</label>
+                  <select 
+                    value={engravingFont}
+                    onChange={(e) => setEngravingFont(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500 bg-white text-gray-900"
+                  >
+                    <option value="font-serif">Elegant (Serif)</option>
+                    <option value="font-sans">Modern (Sans-Serif)</option>
+                    <option value="font-mono">Typewriter (Mono)</option>
+                  </select>
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* QUANTITY + CART */}
           <div className="flex items-center gap-3 mb-6">
